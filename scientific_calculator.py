@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Feb 14 20:00:08 2025  初始版本
 
-@author: caoxufei
-"""
 
 import tkinter as tk
 
@@ -30,7 +24,7 @@ class ScientificCalculator:
                    ('0',4,0), ('.',4,1), ('/',4,2), ('=',4,3),
                    ('sin',5,0), ('cos',5,1), ('tan',5,2), ('clear',5,3),
                    ('arcsin',6,0), ('arccos',6,1), ('arctan',6,2), ('^2',6,3),
-                   ('sqrt',7,0)
+                   ('sqrt',7,0),('delete',7,1)
                   ]
 
         # create buttons
@@ -42,17 +36,25 @@ class ScientificCalculator:
     def click_button(self, button_text):
         # calculate the result
         if button_text == "=":
-            self.calculate_result()
+           self.calculate_result()
         # clear the input box
         elif button_text == "clear":
             self.entry.delete(0, tk.END)
         # calculate scientific functions
         elif button_text in ("sin", "cos", "tan", "arcsin", "arccos", "arctan", "sqrt", "^2"):
             self.calculate_function(button_text)
+        # delete the last character from the input field   
+        elif button_text=="delete":
+            # get the text in the input field
+            current_text=self.entry.get()
+            # ensure input field is not empty
+            if current_text: 
+            # delete last character
+               self.entry.delete(len(current_text)-1, tk.END)  
         # add text in input box
         else:
             self.entry.insert(tk.END, button_text)
-
+    
     # calculate math expressions
     def calculate_result(self):
         try:
