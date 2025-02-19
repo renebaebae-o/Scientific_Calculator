@@ -1,32 +1,34 @@
 
 
 import tkinter as tk
+from Calculator_function import compute_sin, compute_cos, compute_tan, compute_arcsin, compute_arccos, compute_arctan, compute_square, compute_sqrt  
 
 class ScientificCalculator:
     def __init__(self, root):
         # set window title and size
         self.root = root
         self.root.title("Scientific Calculator")
-        self.root.geometry("600x700")
-
-        self.create_calculator()  # Ensure buttons are created
+        self.root.geometry("600x700") 
+        
+        # Ensure buttons are created
+        self.create_calculator() 
 
     def create_calculator(self):
         # create a display area
-        self.entry = tk.Entry(self.root, width=30, borderwidth=5, font=('Arial', 18))
+        self.entry = tk.Entry(self.root, width=30, borderwidth=5, font=('Arial', 18), justify='right')
         self.entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
         # create how buttons distribute
         buttons = [
-                   ('7',1,0), ('8',1,1), ('9',1,2), ('+',1,3),
-                   ('4',2,0), ('5',2,1), ('6',2,2), ('-',2,3),
-                   ('1',3,0), ('2',3,1), ('3',3,2), ('*',3,3),
-                   ('0',4,0), ('.',4,1), ('/',4,2), ('=',4,3),
-                   ('sin',5,0), ('cos',5,1), ('tan',5,2), ('clear',5,3),
-                   ('arcsin',6,0), ('arccos',6,1), ('arctan',6,2), ('^2',6,3),
-                   ('sqrt',7,0),('delete',7,1)
-                  ]
-
+                  ('7',1,0), ('8',1,1), ('9',1,2), ('+',1,3),
+                  ('4',2,0), ('5',2,1), ('6',2,2), ('-',2,3),
+                  ('1',3,0), ('2',3,1), ('3',3,2), ('*',3,3),
+                  ('0',4,0), ('.',4,1), ('/',4,2), ('=',4,3),
+                  ('sin',5,0), ('cos',5,1), ('tan',5,2), ('clear',5,3),
+                  ('arcsin',6,0), ('arccos',6,1), ('arctan',6,2), ('^2',6,3),
+                  ('sqrt',7,0),('delete',7,1)
+                 ]
+        
         # create buttons
         for (text, row, col) in buttons:
             button = tk.Button(self.root, text=text, width=10, height=2, font=('Arial', 12),
@@ -36,7 +38,7 @@ class ScientificCalculator:
     def click_button(self, button_text):
         # calculate the result
         if button_text == "=":
-           self.calculate_result()
+            self.calculate_result()
         # clear the input box
         elif button_text == "clear":
             self.entry.delete(0, tk.END)
@@ -50,18 +52,17 @@ class ScientificCalculator:
             # ensure input field is not empty
             if current_text: 
             # delete last character
-               self.entry.delete(len(current_text)-1, tk.END)  
+               self.entry.delete(len(current_text)-1, tk.END)
         # add text in input box
         else:
             self.entry.insert(tk.END, button_text)
-    
     # calculate math expressions
     def calculate_result(self):
         try:
             # get the expression in the input box
             expression = self.entry.get()
             # calculate the result directly
-            result = eval(expression)
+            result = eval(expression)  
             # clear the input box
             self.entry.delete(0, tk.END)
             # show the result
@@ -74,17 +75,40 @@ class ScientificCalculator:
     # calculate scientific functions
     def calculate_function(self, func_name):
         try:
-    # Get the input value
+            # Get the input value
             value = self.entry.get()
-    # Do nothing if input is empty            
+            # Do nothing if input is empty
             if not value:
                 return
+            #transform to float
+            value = float(value)  
+            
+            # calculate functions
+            if func_name == "sin":
+                result = compute_sin(value)
+            elif func_name == "cos":
+                result = compute_cos(value)
+            elif func_name == "tan":
+                result = compute_tan(value)
+            elif func_name == "arcsin":
+                result = compute_arcsin(value)
+            elif func_name == "arccos":
+                result = compute_arccos(value)
+            elif func_name == "arctan":
+                result = compute_arctan(value)
+            elif func_name == "^2":
+                result = compute_square(value)
+            elif func_name == "sqrt":
+                result = compute_sqrt(value)
+            else:
+                result = "Error"
+            # update input field
             self.entry.delete(0, tk.END)
-    # Display function call in input box
-            self.entry.insert(tk.END, f"{func_name}({value})")  
+            self.entry.insert(0, str(result))
+        # show the error
         except Exception:
             self.entry.delete(0, tk.END)
-            self.entry.insert(tk.END, "Error")
+            self.entry.insert(0, "Error")
 
 if __name__ == "__main__":
     root = tk.Tk()
